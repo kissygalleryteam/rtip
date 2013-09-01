@@ -318,11 +318,11 @@ KISSY.add(function(S,Anim,XTemplate,Promise){
     },
     autoAlign:function(config){
       var that = this;
-      var align = S.buffer(function(config){
-                    that._autoAlign(config);
-                  },this.get("autoAlignRate"));
+      //var align = S.buffer(function(config){
+                    //that._autoAlign(config);
+                  //},this.get("autoAlignRate"));
       this._autoAlign(config);
-      this.autoAlign = align;
+      //this.autoAlign = align;
     },
     _autoAlign:function(config){
       config || (config = {});
