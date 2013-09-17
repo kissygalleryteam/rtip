@@ -205,7 +205,7 @@ KISSY.add('gallery/rtip/1.1/index',function(S,Anim,XTemplate,Promise){
                     <div class="mui-poptip-shadow">\
                         <div class="mui-poptip-container">\
                             <div class="mui-poptip-content" data-role="content">\
-                                {{content}}\
+                                {{{content}}}\
                             </div>\
                         </div>\
                             <div class="mui-poptip-arrow {{#if dir}}mui-poptip-arrow-{{dir}}{{/if}}">\
@@ -489,6 +489,9 @@ KISSY.add('gallery/rtip/1.1/index',function(S,Anim,XTemplate,Promise){
 
   function Tip(cfg){
     cfg = S.merge(defaultCfg,cfg);
+    var box = S.Node('<div class="rtip-content"></div>');
+    this.set('contentEl', box);
+    box.appendTo($body);
     this.set(cfg);
   };
 
@@ -591,7 +594,7 @@ KISSY.add('gallery/rtip/1.1/index',function(S,Anim,XTemplate,Promise){
       clsname += " mui-poptip-arrow-"+diro[dir];
       $arrow.attr("class",clsname);
 
-      $tip.appendTo($body);
+      $tip.appendTo(this.get('contentEl'));
 
       if(tip0 && !titleMode){
         $tip.css({
@@ -694,10 +697,7 @@ KISSY.add('gallery/rtip/1.1/index',function(S,Anim,XTemplate,Promise){
           top:info.ay+"px",
           zIndex:21
         });
-        $tip.hide();
-        $tip.fadeIn(.5,function(){
-          that._isRunning = false;
-        });
+        that._isRunning = false;
       }
 
       tip.bbox.left = info.tx
@@ -870,6 +870,8 @@ KISSY.add('gallery/rtip/1.1/index',function(S,Anim,XTemplate,Promise){
       els = S.filter(els,function(el){
               return D.data(el,BINDED) != BINDED;
             });
+      var timmer;
+
       S.each(els,function(el){
         D.data(el,BINDED,BINDED);
         E.on(el,"mouseenter",function(e){
@@ -882,11 +884,25 @@ KISSY.add('gallery/rtip/1.1/index',function(S,Anim,XTemplate,Promise){
             tip.set("align",el);
             tip.autoAlign();
           }
-        })
+        });
+
         E.on(el,"mouseleave",function(){
-          tip.hide();
+
+          timmer = S.later(function(){
+            tip.hide();
+          }, 100);
+
         })
       });
+
+      tip.get('contentEl').on('mouseenter', function(){
+        timmer && timmer.cancel && timmer.cancel();
+      });
+
+      tip.get('contentEl').on('mouseleave', function(){
+        tip.hide();
+      });
+
     }
   }
   return Tip;
