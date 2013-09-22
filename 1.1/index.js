@@ -694,7 +694,11 @@ KISSY.add(function(S,Anim,XTemplate,Promise){
 
       S.each(els,function(el){
         D.data(el,BINDED,BINDED);
+
         E.on(el,"mouseenter",function(e){
+
+          timmer && timmer.cancel && timmer.cancel();
+
           e.preventDefault();
           var attrname = opt.attrname || "data-title"
           var el = e.currentTarget
