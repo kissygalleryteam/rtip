@@ -1,14 +1,15 @@
 {
-    "name": "rtip",
-    "version": "1.1",
-    "desc": "tip自适应",
-    "cover": "",
+    "name":"rtip",
+    "version":"1.1",
+    "desc":"tip自适应",
+    "cover":"",
     "tag":"",
-    "author": {
-        "name": "yuanhuang",
-        "email": "cookieu@gmail.com",
-        "page": ""
-    },
-    "type": "kissy-gallery",
-    "type-url": "http://gallery.kissyui.com/guide"
+    "author":{
+    "name":"yuanhuang",
+    "email":"cookieu@gmail.com",
+    "page":""
+},
+    "type":"kissy-gallery",
+    "type-url":"http://gallery.kissyui.com/guide",
+    "githubName":"shepherdwind"
 }
