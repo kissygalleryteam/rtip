@@ -680,44 +680,79 @@ KISSY.add(function(S,Anim,XTemplate,Promise){
     maxwidth:300,
     "__mode__":"title"
   };
-  Tip.listen = function(selector,opt){
+
+  Tip.listen = function(selector, opt){
+
     opt || (opt = {});
+
     var els = S.all(selector);
     var BINDED = "binded";
+    var delegate = opt.base || document;
 
-    if(els){
-      var tip = new Tip(S.merge(listenDft,opt.alignConfig));
-      els = S.filter(els,function(el){
-              return D.data(el,BINDED) != BINDED;
-            });
+    var tip = new Tip(S.merge(listenDft,opt.alignConfig));
+    els = S.filter(els,function(el){
+      return D.data(el,BINDED) != BINDED;
+    });
+    var timmer;
+
+    E.delegate(delegate, 'mouseenter', selector, function(e){
+
+      var attrname = opt.attrname || "data-title"
+      var el = e.currentTarget
+        , title = D.attr(el,attrname)
+
+      if(S.trim(title)){
+        timmer && timmer.cancel && timmer.cancel();
+        tip.set("content",title);
+        tip.set("align",el);
+        tip.autoAlign();
+      }
+
+    });
+
+    E.delegate(delegate, 'mouseleave', selector, function(e){
+      timmer = S.later(function(){
+        tip.hide();
+      }, 100);
+    });
+
+    tip.get('contentEl').on('mouseenter', function(){
+      timmer && timmer.cancel && timmer.cancel();
+    });
+
+    tip.get('contentEl').on('mouseleave', function(){
+      tip.hide();
+    });
+
+  }
+
+  Tip.render = function(el, content, opt){
+    opt || (opt = {});
+    var el = S.all(el);
+
+    if(el.length){
+
+      var tip = new Tip(S.merge(listenDft, opt));
       var timmer;
 
-      S.each(els,function(el){
-        D.data(el,BINDED,BINDED);
+      E.on(el,"mouseenter",function(e){
 
-        E.on(el,"mouseenter",function(e){
+        timmer && timmer.cancel && timmer.cancel();
 
-          timmer && timmer.cancel && timmer.cancel();
+        e.preventDefault();
+        tip.set("content", content);
+        tip.set("align", el);
+        tip.autoAlign();
 
-          e.preventDefault();
-          var attrname = opt.attrname || "data-title"
-          var el = e.currentTarget
-            , title = D.attr(el,attrname)
-          if(S.trim(title)){
-            tip.set("content",title);
-            tip.set("align",el);
-            tip.autoAlign();
-          }
-        });
-
-        E.on(el,"mouseleave",function(){
-
-          timmer = S.later(function(){
-            tip.hide();
-          }, 100);
-
-        })
       });
+
+      E.on(el,"mouseleave",function(){
+
+        timmer = S.later(function(){
+          tip.hide();
+        }, 100);
+
+      })
 
       tip.get('contentEl').on('mouseenter', function(){
         timmer && timmer.cancel && timmer.cancel();
@@ -728,7 +763,7 @@ KISSY.add(function(S,Anim,XTemplate,Promise){
       });
 
     }
-  }
+  };
   return Tip;
 },{requires:['./anim',
              "./index.css",
