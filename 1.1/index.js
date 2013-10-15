@@ -732,17 +732,17 @@ KISSY.add(function(S,Anim,XTemplate,Promise){
 
     if(el.length){
 
+      opt.content = content;
+      opt.align = el;
       var tip = new Tip(S.merge(listenDft, opt));
       var timmer;
 
       E.on(el,"mouseenter",function(e){
 
         timmer && timmer.cancel && timmer.cancel();
-
         e.preventDefault();
-        tip.set("content", content);
-        tip.set("align", el);
         tip.autoAlign();
+        tip.show();
 
       });
 
@@ -762,6 +762,7 @@ KISSY.add(function(S,Anim,XTemplate,Promise){
         tip.hide();
       });
 
+      return tip;
     }
   };
   return Tip;
