@@ -198,7 +198,8 @@ KISSY.add('gallery/rtip/1.1/index',function(S,Anim,XTemplate,Promise){
     autoAdjust:false,                      // 窗口变化自动调整位置
     autoRender:false,                      // 自动渲染，必须设置了x,y
     autoAlignRate:300,
-    offset:[0,0]
+    offset:[0,0],
+    tipPos: 0.5             // tip position, (0, 1)
   };
 
     var TIPTPL = '<div class="mui-poptip mui-poptip-{{theme}}">\
@@ -332,7 +333,7 @@ KISSY.add('gallery/rtip/1.1/index',function(S,Anim,XTemplate,Promise){
   };
 
   //获取tip尖角的位置，以及tipbox的左上角的坐标
-  function getTipBoxAndArrowXY(dir,target,arrow,tip,constrain,offset){
+  function getTipBoxAndArrowXY(dir,target,arrow,tip,constrain,offset, pos){
     var ret = {}
       , targetBBox = target.bbox
       , arrowBBox = arrow.bbox
@@ -354,7 +355,7 @@ KISSY.add('gallery/rtip/1.1/index',function(S,Anim,XTemplate,Promise){
       }
       //如果能放下tip
       if(cbbox.width > tbbox.width){
-        tx = ret.x - tbbox.width/2;
+        tx = ret.x - tbbox.width * pos;
       }else{                     //不能放下，取露出来最多的
         if(constrain.cx>ret.cx){ //右边对齐
           tx = cbbox.left + cbbox.width - tbbox.width;
@@ -412,7 +413,7 @@ KISSY.add('gallery/rtip/1.1/index',function(S,Anim,XTemplate,Promise){
       }
       //能放下tip
       if(cbbox.height > tbbox.height){
-        ty = ret.y - tbbox.height/2;
+        ty = ret.y - tbbox.height * pos;
       }else{
         if(constrain.cy > ret.cy){//偏下放置
           ty = cbbox.height + cbbox.top - tbbox.height;
@@ -566,7 +567,7 @@ KISSY.add('gallery/rtip/1.1/index',function(S,Anim,XTemplate,Promise){
                                      this.get("arrow"),
                                      tip,
                                      constrain,
-                                     offset);
+                                     offset, this.get('tipPos'));
       //各个方向上的位移修正
       info = fixinfo(info,dir);
       //title模式，并且位置信息没有变化的话，不重新渲染
