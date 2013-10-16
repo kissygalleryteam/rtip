@@ -62,10 +62,9 @@ S.use('gallery/rtip/1.1/index', function (S, RTip) {
     tipContentCls:'mui-chart-tip-content', // tip内容
     boundryDetect:true,                    // 默认开启边界检测
     arrowsize:[6,6],
-    maxwidth:false,                        // 最大宽度，超过这个宽度折行
-    share:false,                           // 共用tip
+    maxwidth: 300,                        // 最大宽度，超过这个宽度折行
     autoAdjust:false,                      // 窗口变化自动调整位置
     autoRender:false,                      // 自动渲染，必须设置了x,y
-    autoAlignRate:300,
     offset:[0,0],
-    dirs: 
+    dirs: ['left', 'right'],
+    tipPos: 0.5  // 箭头位置，0 到 1，表示相对于盒子宽度或者高度的百分比
