@@ -237,7 +237,13 @@ KISSY.add('gallery/rtip/1.1/index',function(S,Anim,XTemplate,Promise){
   //获取tip content的尺寸
   var $detector
   function sizeof(html,minwidth,minheight,maxwidth,maxheight){
-    $detector || ($detector = S.Node("<div/>").css({"visibility":"hidden","position":"fixed","left":'-9999em',"top":0}).appendTo($body));
+    $detector || ($detector = S.Node("<div/>").css({
+      "visibility":"hidden",
+      "position":"fixed",
+      "left":'-9999em',
+      'max-width': maxwidth + 'px',
+      "top":0
+    }).appendTo($body));
     $detector.append(html);
     var ret = {
       width:D.outerWidth($detector),
