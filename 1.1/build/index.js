@@ -281,13 +281,15 @@ KISSY.add('gallery/rtip/1.1/index',function(S,Anim,XTemplate,Promise){
     var edge;
     switch(dir){
       case "top":
-      edge = tbbox.top - bbox.height;
+      var scrollTop = S.all(document).scrollTop() || 0;
+      edge = (tbbox.top - scrollTop) - bbox.height;
       break;
       case "right":
       edge =  cbbox.width - tbbox.left - tbbox.width - bbox.width;
       break;
       case "bottom":
-      edge = cbbox.height - tbbox.top - tbbox.height - bbox.height;
+      var scrollTop = S.all(document).scrollTop() || 0;
+      edge = cbbox.height - (tbbox.top - scrollTop) - tbbox.height - bbox.height;
       break;
       case "left":
       edge = tbbox.left - cbbox.left - bbox.width;
